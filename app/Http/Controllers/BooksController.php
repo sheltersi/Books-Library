@@ -13,12 +13,13 @@ class BooksController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index():Response
+    public function index():View
     {
-return response('Page to display Books list');
-    }
+return view("books.index",[
+    'books'=>Books::with('user')->latest()->get(),
+]);
 
-    /**
+  }  /**
      * Show the form for creating a new resource.
      */
     public function create(Request $request):View
@@ -33,15 +34,31 @@ return response('Page to display Books list');
      */
     public function store(Request $request):RedirectResponse
     {
+        $data = new Books();
         
         $validated= $request->validate([
-            "title"=> "required|string|max:50",
-            "author"=> "required|string|max|50",
+            "title"=> "required|string|max:100",
+            "author"=> "required|string|max:20",
             "version"=> "required|numeric",
+            "category"=> "required",
+            "newbook"=> "required|string|min:5",
             "year_published"=> "required|numeric",
+          
         ]);
 
+       
+        
+
         $request->user()->books()->create($validated);
+
+        if($request->file('book')){
+            $file= $request->file('book');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $file-> move(public_path('public/Image'), $filename);
+            $data['book']= $filename;
+        }
+
+        $data->save();
         return redirect(route("dashboard"));
     }
 

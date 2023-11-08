@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BooksController;
+use App\Http\Controllers\CommentsController;
+
 use function PHPUnit\Framework\once;
 
 /*
@@ -40,9 +42,17 @@ Route::get('books/create',[BooksController::class,'create'])->name('books.create
 Route::post('books/create',[BooksController::class,'store'])->name('books.store')
 ->middleware('auth');
 
-Route::get('books',[BooksController::class,'index'])->name('books.listing')
+Route::get('books',[BooksController::class,'index'])->name('books.index')
 ->middleware('auth');
 
+// for commentsController
+Route::get('books/comments/create', [CommentsController ::class,'create'])->name('comments.create')
+->middleware('auth');
+Route::post('books/comments/create', [CommentsController::class,'store'])->name('comments.store')
+->middleware('auth');
+
+Route::get('books/{}',[commentsController::class, 'display'])->name('title.dislay')
+->middleware('auth');
 
 require __DIR__.'/auth.php';
 
