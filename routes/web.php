@@ -51,7 +51,7 @@ Route::get('books/comments/create', [CommentsController ::class,'create'])->name
 Route::post('books/comments/create', [CommentsController::class,'store'])->name('comments.store')
 ->middleware('auth');
 
-Route::get('books/{}',[commentsController::class, 'display'])->name('title.dislay')
+Route::get('books/{book}',[BooksController::class, 'show'])->name('books.show')
 ->middleware('auth');
 
 require __DIR__.'/auth.php';

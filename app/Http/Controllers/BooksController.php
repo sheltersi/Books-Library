@@ -58,16 +58,18 @@ return view("books.index",[
             $data['book']= $filename;
         }
 
-        $data->save();
+        // $data->save();
         return redirect(route("dashboard"));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(books $books)
+    public function show(books $book)
     {
-        //
+        return view("books.show",[
+            'book' => $book,
+        ]);
     }
 
     /**
